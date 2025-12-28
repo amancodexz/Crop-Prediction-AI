@@ -1,0 +1,242 @@
+:root {
+    --primary-color: #ff0000;
+    /* Pure Red */
+    --secondary-color: #cc0000;
+    /* Darker Red */
+    --background-gradient: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+    /* Black Background */
+    --card-bg: rgba(255, 255, 255, 0.95);
+    /* White Card */
+    --text-color: #000000;
+    /* Black Text */
+    --input-bg: #ffffff;
+    /* White Input */
+    --input-border: #000000;
+    /* Black Border */
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: url('background.png') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+}
+
+.card {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.header h1 {
+    color: var(--secondary-color);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.header p {
+    color: #7f8c8d;
+    font-size: 1rem;
+}
+
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.input-group input {
+    padding: 12px;
+    border: 2px solid var(--input-border);
+    border-radius: 10px;
+    background: var(--input-bg);
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+}
+
+
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.btn-predict {
+    width: 100%;
+    padding: 15px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+}
+
+.btn-predict:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
+}
+
+.btn-predict:active {
+    transform: translateY(0);
+}
+
+.result-box {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(231, 76, 60, 0.1);
+    border-radius: 15px;
+    text-align: center;
+    border: 2px solid var(--primary-color);
+    animation: fadeIn 0.5s ease;
+}
+
+.result-box h2 {
+    color: var(--text-color);
+    font-size: 1.5rem;
+}
+
+.result-box span {
+    color: var(--secondary-color);
+    font-weight: 700;
+    font-size: 1.8rem;
+    text-transform: capitalize;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 600px) {
+    .header h1 {
+        font-size: 2rem;
+    }
+
+    .card {
+        padding: 1.5rem;
+    }
+}
+
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    padding: 1rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(255, 0, 0, 0.2);
+    border-bottom: 2px solid var(--secondary-color);
+}
+
+.logo {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--primary-color);
+}
+
+/* Footer */
+.footer {
+    background: rgba(0, 0, 0, 0.95);
+    color: #fff;
+    text-align: center;
+    padding: 2rem;
+    margin-top: auto;
+    width: 100%;
+    border-top: 2px solid var(--secondary-color);
+}
+
+.footer-content p {
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+/* Adjust body to accommodate fixed nav and footer */
+body {
+    padding-top: 80px;
+    /* Space for fixed navbar */
+    flex-direction: column;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 2rem;
+}
