@@ -44,3 +44,21 @@ Simple crop recommendation demo using a trained scikit-learn model and a small F
 ---
 
 Created/updated by GitHub Copilot (Raptor mini (Preview)).
+
+---
+
+## 🚀 Deployment (How to fix the "Static Demo" error)
+
+To make the AI work online, you need to deploy this to a service that supports Python (GitHub Pages does not).
+
+### Deploy on Render (Free)
+1. Fork this repository to your GitHub.
+2. Sign up at [render.com](https://render.com).
+3. Create a **New Web Service**.
+4. Connect your GitHub repository.
+5. **Important Settings**:
+   - **Build Command:** `pip install -r requirements.txt`
+   - **Start Command:** `gunicorn app:app`
+6. Click **Deploy**.
+
+Once deployed, Render will give you a new URL (e.g., `https://crop-prediction-ai.onrender.com`). Use that link instead of GitHub Pages!
