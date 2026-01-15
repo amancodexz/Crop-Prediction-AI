@@ -24,3 +24,7 @@ venv.bak/
 .vscode/
 .idea/
 *.swp
+
+# Model artifacts
+model.pkl
+*.pkl

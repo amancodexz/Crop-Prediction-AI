@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request
 import joblib
 import pandas as pd
@@ -5,12 +6,17 @@ import numpy as np
 
 app = Flask(__name__)
 
-# Load the trained model
-try:
-    model = joblib.load('model.pkl')
-except FileNotFoundError:
-    print("Error: model.pkl not found. Run train_model.py first.")
-    exit()
+# Model loading with graceful fallback
+MODEL_PATH = os.environ.get("MODEL_PATH", "model.pkl")
+model = None
+if os.path.exists(MODEL_PATH):
+    try:
+        model = joblib.load(MODEL_PATH)
+        app.logger.info("Model loaded from %s", MODEL_PATH)
+    except Exception:
+        app.logger.exception("Failed to load model from %s", MODEL_PATH)
+else:
+    app.logger.warning("Model not found at %s; predictions will be disabled.", MODEL_PATH)
 
 @app.route('/')
 def home():
@@ -20,7 +26,7 @@ def home():
 def predict():
     if request.method == 'POST':
         try:
-            # Get data from form
+            # Parse inputs
             nitrogen = float(request.form['nitrogen'])
             phosphorus = float(request.form['phosphorus'])
             potassium = float(request.form['potassium'])
@@ -29,15 +35,24 @@ def predict():
             ph_level = float(request.form['ph'])
             rainfall = float(request.form['rainfall'])
 
-            # Prepare features for prediction
-            features = np.array([[nitrogen, phosphorus, potassium, temperature, humidity, ph_level, rainfall]])
-            
+            if model is None:
+                return render_template('index.html', prediction="Model not available. Please train the model.")
+
+            # Prepare features with proper column names to avoid sklearn warnings
+            cols = ['N','P','K','temperature','humidity','ph','rainfall']
+            features = pd.DataFrame([[nitrogen, phosphorus, potassium, temperature, humidity, ph_level, rainfall]], columns=cols)
+
             # Make prediction
             prediction = model.predict(features)[0]
-            
             return render_template('index.html', prediction=prediction)
-        except Exception as e:
-            return render_template('index.html', prediction=f"Error: {e}")
+        except ValueError:
+            app.logger.exception("Invalid input values provided for prediction")
+            return render_template('index.html', prediction="Invalid input values. Please check your inputs.")
+        except Exception:
+            app.logger.exception("Unexpected error during prediction")
+            return render_template('index.html', prediction="Internal error. Please contact the administrator.")
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    debug = os.environ.get("FLASK_DEBUG", "False").lower() in ("1", "true", "yes")
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port, debug=debug)
